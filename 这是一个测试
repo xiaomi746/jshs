@@ -1,0 +1,179 @@
+-- Fantasy UI Example (English Version)
+local function createUI()
+    -- Main window
+    local win = Window:new {
+        title = "Fantasy",
+        width = "80%",
+        height = "70%",
+        x = "center",
+        y = "center",
+        bg = "#222222",
+        radius = 16,
+        shadow = true
+    }
+
+    -- Sidebar
+    local sidebar = Layout:new {
+        parent = win,
+        width = "35%",
+        height = "match",
+        bg = "#1E1E1E",
+        radius = 16,
+        gravity = "left"
+    }
+
+    -- User info section
+    local userInfo = Layout:new {
+        parent = sidebar,
+        width = "match",
+        height = "wrap",
+        padding = "16"
+    }
+    local avatar = Image:new {
+        parent = userInfo,
+        width = 40,
+        height = 40,
+        src = "https://picsum.photos/200/200",
+        radius = 20
+    }
+    local userName = Text:new {
+        parent = userInfo,
+        text = "ShenQuan",
+        textColor = "#FFFFFF",
+        textSize = 16,
+        marginLeft = 12,
+        marginTop = 4
+    }
+    local userVersion = Text:new {
+        parent = userInfo,
+        text = "version 1.9.1",
+        textColor = "#AAAAAA",
+        textSize = 12,
+        marginLeft = 12,
+        marginTop = 2
+    }
+
+    -- Menu items
+    local menuItems = {
+        {icon = "🏠", text = "Home", color = "#42A5F5", active = true},
+        {icon = "⚔️", text = "Combat", color = "#EC407A"},
+        {icon = "🚶", text = "Movement", color = "#66BB6A"},
+        {icon = "🏗️", text = "Building", color = "#AB47BC"},
+        {icon = "⚙️", text = "Debug", color = "#F06292"}
+    }
+
+    for i, item in ipairs(menuItems) do
+        local menuItem = Layout:new {
+            parent = sidebar,
+            width = "match",
+            height = 48,
+            bg = item.active and "#333333" or "#00000000",
+            paddingLeft = 16,
+            gravity = "center_vertical",
+            onClick = function()
+                for _, v in ipairs(menuItems) do
+                    v.active = false
+                end
+                item.active = true
+                -- Add your menu switch logic here
+            end
+        }
+        local menuIcon = Text:new {
+            parent = menuItem,
+            text = item.icon,
+            textSize = 18,
+            textColor = item.color
+        }
+        local menuText = Text:new {
+            parent = menuItem,
+            text = item.text,
+            textColor = item.active and "#FFFFFF" or "#CCCCCC",
+            textSize = 14,
+            marginLeft = 12
+        }
+    end
+
+    -- Content area
+    local content = Layout:new {
+        parent = win,
+        width = "65%",
+        height = "match",
+        marginLeft = "35%",
+        padding = "16"
+    }
+
+    -- Notice card
+    local noticeCard = Layout:new {
+        parent = content,
+        width = "match",
+        height = "wrap",
+        bg = "#2A2A2A",
+        radius = 12,
+        padding = "16",
+        marginBottom = 16
+    }
+    local noticeTitle = Text:new {
+        parent = noticeCard,
+        text = "Announcement",
+        textColor = "#FFFFFF",
+        textSize = 16,
+        textStyle = "bold"
+    }
+    local noticeText = Text:new {
+        parent = noticeCard,
+        text = "Welcome to Fantasy",
+        textColor = "#AAAAAA",
+        textSize = 14,
+        marginTop = 8
+    }
+
+    -- Switch items
+    local function createSwitchItem(title, desc)
+        local item = Layout:new {
+            parent = content,
+            width = "match",
+            height = "wrap",
+            bg = "#2A2A2A",
+            radius = 12,
+            padding = "16",
+            marginBottom = 12
+        }
+        local textLayout = Layout:new {
+            parent = item,
+            width = "wrap",
+            height = "wrap"
+        }
+        local itemTitle = Text:new {
+            parent = textLayout,
+            text = title,
+            textColor = "#FFFFFF",
+            textSize = 14
+        }
+        local itemDesc = Text:new {
+            parent = textLayout,
+            text = desc,
+            textColor = "#666666",
+            textSize = 12,
+            marginTop = 4
+        }
+        local switch = Switch:new {
+            parent = item,
+            width = "wrap",
+            height = "wrap",
+            gravity = "right|center_vertical",
+            onCheck = function(checked)
+                print(title .. " state: " .. tostring(checked))
+            end
+        }
+    end
+
+    createSwitchItem("Bypass Detection", "Bypass game detection as the name suggests")
+    createSwitchItem("Feature Toggle", "This is a toggle switch")
+    createSwitchItem("Feature Toggle", "This is a toggle switch")
+
+    -- Show the window
+    win:show()
+end
+
+-- Run the UI
+createUI()
